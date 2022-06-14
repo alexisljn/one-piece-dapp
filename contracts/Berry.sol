@@ -7,6 +7,7 @@ contract Berry is IERC20 {
     string public name = "Berry";
     string public symbol = "BER";
     uint8 public decimals = 10;
+    uint public initialSupply = 1000000;
     uint256 public override totalSupply;
     address public founder;
     mapping(address => uint) private balances;
@@ -14,8 +15,7 @@ contract Berry is IERC20 {
 
     constructor() {
         founder = msg.sender;
-        totalSupply = 1000000 * (10**decimals); // 1 million at start
-        //_mint(founder, totalSupply);
+        _mint(founder, initialSupply* (10 ** decimals)); // 1 million at start
     }
 
     function balanceOf(address account) override external view returns(uint) {
