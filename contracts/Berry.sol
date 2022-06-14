@@ -2,12 +2,13 @@
 pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import "hardhat/console.sol";
 
 contract Berry is IERC20 {
     string public name = "Berry";
     string public symbol = "BER";
     uint8 public decimals = 10;
-    uint16 private initialSupply = 1000000;
+    uint32 private initialSupply = 1000000;
     uint256 public override totalSupply;
     address public founder;
     mapping(address => uint) private balances;
@@ -15,7 +16,11 @@ contract Berry is IERC20 {
 
     constructor() {
         founder = msg.sender;
-        _mint(founder, initialSupply* (10 ** decimals)); // 1 million at start
+        uint initialSupplyInUnit = initialSupply  * (10 ** decimals);
+        _mint(founder, initialSupplyInUnit); // 1 million at start
+
+        console.log("Deployed by: ", msg.sender);
+        console.log("Deployed with supply: %s", initialSupplyInUnit);
     }
 
     function balanceOf(address account) override external view returns(uint) {
@@ -29,7 +34,9 @@ contract Berry is IERC20 {
         balances[to] += amount;
 
         emit Transfer(msg.sender, to, amount);
-
+        console.log("Sender: ", msg.sender);
+        console.log("Receiver: ", to);
+        console.log("Value: %s", amount);
         return true;
     }
 
@@ -43,7 +50,9 @@ contract Berry is IERC20 {
         allowed[msg.sender][spender] = amount;
 
         emit Approval(msg.sender, spender, amount);
-
+        console.log("Sender: ", msg.sender);
+        console.log("Spender: ", spender);
+        console.log("Value: %s", amount);
         return true;
     }
 
@@ -56,6 +65,10 @@ contract Berry is IERC20 {
         balances[to] += amount;
 
         emit Transfer(msg.sender, to, amount);
+        console.log("Sender: ", from);
+        console.log("Spender: ", msg.sender);
+        console.log("Receiver: ", to);
+        console.log("Value: %s", amount);
 
         return true;
     }
@@ -65,12 +78,6 @@ contract Berry is IERC20 {
 
         balances[account] = amount;
 
-        emit Transfer(0, account, amount);
+        emit Transfer(address(0), account, amount);
     }
-
-
-// Implémenter les méthodes de l'interface
-
-
-
 }
