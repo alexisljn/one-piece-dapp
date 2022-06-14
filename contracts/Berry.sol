@@ -61,6 +61,11 @@ contract Berry is IERC20 {
     }
 
     function _mint(address account, uint amount) internal {
+        totalSupply += amount;
+
+        balances[account] = amount;
+
+        emit Transfer(0, account, amount);
     }
 
 
