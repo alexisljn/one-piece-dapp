@@ -7,7 +7,7 @@ contract Berry is IERC20 {
     string public name = "Berry";
     string public symbol = "BER";
     uint8 public decimals = 10;
-    uint public initialSupply = 1000000;
+    uint16 private initialSupply = 1000000;
     uint256 public override totalSupply;
     address public founder;
     mapping(address => uint) private balances;
