@@ -21,6 +21,12 @@ function App() {
       </header>
     </div>
   );
+
+    type RouteData = {
+        path: string,
+        element: ReactElement,
+    };
+
 }
 
 export default App;
