@@ -4,6 +4,7 @@ pragma solidity ^0.8.0;
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "hardhat/console.sol";
 
+// Mettre des _ pour les attributs/fonctions private et internal
 contract Berry is IERC20 {
     string public name = "Berry";
     string public symbol = "BER";
@@ -61,6 +62,8 @@ contract Berry is IERC20 {
         require(balances[from] >= amount, "Insufficient funds in balance");
 
         allowed[from][msg.sender] -= amount;
+
+        // call à transfer non ?
 
         balances[from] -= amount;
         balances[to] += amount;
