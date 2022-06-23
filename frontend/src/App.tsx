@@ -38,6 +38,12 @@ function App() {
         }
     ]
 
+    function renderRoutes(routes: RouteData[]): ReactElement[] {
+        return routes.map((routes, index) => (
+            <Route key={index} path={routes.path} element={routes.element}/>
+        ))
+    }
+
 }
 
 export default App;
