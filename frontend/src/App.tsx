@@ -27,6 +27,17 @@ function App() {
         element: ReactElement,
     };
 
+    const routes: RouteData[] = [
+        {
+            path: '/',
+            element: <Skills/>
+        },
+        {
+            path: '/skills',
+            element: <Skills/>
+        }
+    ]
+
 }
 
 export default App;
