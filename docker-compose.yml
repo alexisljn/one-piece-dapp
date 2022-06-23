@@ -9,16 +9,15 @@ services:
       - ./:/home/node/app
     ports:
       - "8545:8545"
-    #command: sh -c "npm install --verbose && npx hardhat node"
-    command: node server.js
+    command: sh -c "npm install --verbose && npx hardhat node"
 
-#  frontend:
-#    image: node:16
-#    container_name: frontend
-#    working_dir: /home/node/app
-#    volumes:
-#      - ./frontend:/home/node/app
-#    ports:
-#      - "80:3000"
-#    command: sh -c "npm install --verbose && npm start"
-#    stdin_open: true
+  frontend:
+    image: node:16
+    container_name: frontend
+    working_dir: /home/node/app
+    volumes:
+      - ./frontend:/home/node/app
+    ports:
+      - "80:3000"
+    command: sh -c "npm install --verbose && npm start"
+    stdin_open: true
