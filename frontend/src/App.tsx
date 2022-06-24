@@ -6,6 +6,9 @@ import {renderRoutes} from "./routes/renderRoutes";
 import {Header} from "./components/common/Header/Header";
 import {ethers} from "ethers";
 import {Address} from "./types/Address";
+import {UserContextType} from "./types/UserContextType";
+
+export const UserContext = React.createContext<UserContextType>({user: null, provider: null});
 
 function App() {
 
@@ -32,10 +35,12 @@ function App() {
 
     return (
         <div>
-                <Header connect={connect} />
+            <UserContext.Provider value={{user: user, provider: provider}}>
+                <Header connect={connect}/>
                 <Routes>
                   {renderRoutes(routes)}
                 </Routes>
+            </UserContext.Provider>
         </div>
     );
 }
