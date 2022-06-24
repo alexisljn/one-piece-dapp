@@ -12,8 +12,9 @@ function App() {
 
     useEffect(() => {
         if (typeof window.ethereum != "undefined") {
-            setProvider(new ethers.providers.Web3Provider(window.ethereum as any)) // https://github.com/MetaMask/providers/issues/200
-            // Message d'erreur si pas de provider à gerer plus tard
+            const web3provider = new ethers.providers.Web3Provider(window.ethereum as any) // https://github.com/MetaMask/providers/issues/200
+            setProvider(web3provider)
+            // Message d'erreur à gérer
         }
     }, []);
 
