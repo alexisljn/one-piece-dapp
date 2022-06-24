@@ -1,6 +1,6 @@
-import React, {ReactElement} from "react";
+import React from "react";
 
-export function Skills(): ReactElement {
+export function Skills() {
     return (
         <p>Skills</p>
     )
