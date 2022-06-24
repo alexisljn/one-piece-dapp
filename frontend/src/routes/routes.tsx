@@ -1,4 +1,3 @@
-// import React from "react";
 import {Skills} from "../components/pages/Skills/Skills";
 import {RouteData} from "../types/RouteData";
 
