@@ -18,12 +18,16 @@ function App() {
         }
     }, []);
 
+    async function connect() {
+        console.log(await provider?.send("eth_requestAccounts", []));
+    }
+
     return (
         <div>
-          <Header/>
-          <Routes>
-              {renderRoutes(routes)}
-          </Routes>
+                <Header connect={connect} />
+                <Routes>
+                  {renderRoutes(routes)}
+                </Routes>
         </div>
     );
 }
