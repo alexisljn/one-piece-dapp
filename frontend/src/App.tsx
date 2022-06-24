@@ -1,5 +1,4 @@
 import React, {useEffect, useState} from 'react';
-import './App.css';
 import {Routes} from "react-router-dom";
 import {routes} from "./routes/routes";
 import {renderRoutes} from "./routes/renderRoutes";
