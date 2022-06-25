@@ -29,7 +29,7 @@ contract Berry is IERC20 {
     }
 
     function transfer(address to, uint amount) override external returns(bool) {
-        require(balances[msg.sender] >= amount, "Insufficient funds in balance");
+        require(balances[msg.sender] >= amount, "Lack of funds in balance");
 
         balances[msg.sender] -= amount;
         balances[to] += amount;
@@ -46,7 +46,7 @@ contract Berry is IERC20 {
     }
 
     function approve(address spender, uint amount) override external returns(bool) {
-        require(balances[msg.sender] >= amount, "Insufficient funds in balance");
+        require(balances[msg.sender] >= amount, "Lack of funds in balance");
 
         allowed[msg.sender][spender] = amount;
 
@@ -58,8 +58,8 @@ contract Berry is IERC20 {
     }
 
     function transferFrom(address from, address to, uint amount) override external returns(bool) {
-        require(allowed[from][msg.sender] >= amount, "Insufficient funds in allowance");
-        require(balances[from] >= amount, "Insufficient funds in balance");
+        require(allowed[from][msg.sender] >= amount, "Lack of funds in allowance");
+        require(balances[from] >= amount, "Lack of funds in balance");
 
         allowed[from][msg.sender] -= amount;
 

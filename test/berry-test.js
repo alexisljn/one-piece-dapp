@@ -63,8 +63,6 @@ describe('Berry Contract', () => {
 
         const amountNotInFounderBalance = ethers.BigNumber.from("10000000000000001");
 
-        await expect(berry.transfer(addr1.address, amountNotInFounderBalance)).to.be.reverted;
+        await expect(berry.transfer(addr1.address, amountNotInFounderBalance)).to.be.revertedWith('Lack of funds');
     })
-
-    it('Allowance of ')
 })
