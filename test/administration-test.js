@@ -1,4 +1,5 @@
 const { expect } = require('chai');
+const {deploy, isAdmin} = require("./helpers/AdministrationTestHelper");
 
 // Deploiement
 // founder est bien admin (hasRole)
@@ -16,7 +17,14 @@ const { expect } = require('chai');
 
 describe('Administration Contract', () => {
 
-    it('', async () => {
+    it('Is founder account an admin', async () => {
+        const contract = await deploy();
+
+        const [founder] = await ethers.getSigners();
+
+        expect(await isAdmin(contract, founder.address)).to.be.true;
+    })
+
 
     })
 })
