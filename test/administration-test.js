@@ -25,6 +25,12 @@ describe('Administration Contract', () => {
         expect(await isAdmin(contract, founder.address)).to.be.true;
     })
 
+    it('is "ROLE_ADMIN" the role that manages the role admin ', async () => {
+        const contract = await deploy();
+
+        expect(await getRoleAdminOfRoleAdmin(contract)).to.equal(getRoleAdminHashed());
+    })
+
 
     })
 })
