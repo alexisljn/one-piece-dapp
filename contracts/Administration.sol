@@ -13,26 +13,26 @@ contract Administration is AccessControl {
         _setRoleAdmin(ROLE_ADMIN, ROLE_ADMIN);
     }
 
-    function grantRole(address account) override external onlyRole(getRoleAdmin(ROLE_ADMIN)) {
+    function grantAdmin(address account) external onlyRole(getRoleAdmin(ROLE_ADMIN)) {
         AccessControl.grantRole(ROLE_ADMIN, account);
     }
 
-    function revokeRole(address account) override external onlyRole(getRoleAdmin(ROLE_ADMIN)) {
+    function revokeAdmin(address account) external onlyRole(getRoleAdmin(ROLE_ADMIN)) {
         require(msg.sender != founder, "founder will always be admin");
         require(msg.sender != account, "You cannot revoke yourself your role admin");
 
         AccessControl.revokeRole(ROLE_ADMIN, account);
     }
 
-    function hasRole(address account) override external {
-        AccessControl.hasRole(ROLE_ADMIN, account);
+    function isAdmin(address account) public view returns(bool) {
+        return AccessControl.hasRole(ROLE_ADMIN, account);
     }
 
-    function getRoleAdmin() override external {
-        AccessControl.getRoleAdmin(ROLE_ADMIN);
+    function getRoleAdminOfRoleAdmin() external view returns(bytes32) {
+        return AccessControl.getRoleAdmin(ROLE_ADMIN);
     }
 
-    function renounceRole() override external {
+    function renounceRoleAdmin() external {
         AccessControl.renounceRole(ROLE_ADMIN, msg.sender);
     }
 
