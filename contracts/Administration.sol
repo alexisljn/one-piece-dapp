@@ -23,4 +23,17 @@ contract Administration is AccessControl {
 
         AccessControl.revokeRole(ROLE_ADMIN, account);
     }
+
+    function hasRole(address account) override external {
+        AccessControl.hasRole(ROLE_ADMIN, account);
+    }
+
+    function getRoleAdmin() override external {
+        AccessControl.getRoleAdmin(ROLE_ADMIN);
+    }
+
+    function renounceRole() override external {
+        AccessControl.renounceRole(ROLE_ADMIN, msg.sender);
+    }
+
 }
