@@ -9,8 +9,8 @@ contract Administration is AccessControl {
 
     constructor() {
         founder = msg.sender;
-        _setupRole(keccak256("ROLE_ADMIN"), founder);
-        _setRoleAdmin(keccak256("ROLE_ADMIN"), keccak256("ROLE_ADMIN"));
+        _setupRole(ROLE_ADMIN, founder);
+        _setRoleAdmin(ROLE_ADMIN, ROLE_ADMIN);
     }
 
     function revokeRoleAdmin(bytes32 role, address account) external {
