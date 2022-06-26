@@ -1,5 +1,5 @@
 const { expect } = require('chai');
-const {deploy, isAdmin} = require("./helpers/AdministrationTestHelper");
+const {deploy, isAdmin, getRoleAdminOfRoleAdmin, addAdmin, getRoleAdminHashed, removeAdmin} = require("./helpers/AdministrationTestHelper");
 
 // Deploiement
 // founder est bien admin (hasRole)
