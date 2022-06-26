@@ -31,6 +31,19 @@ describe('Administration Contract', () => {
         expect(await getRoleAdminOfRoleAdmin(contract)).to.equal(getRoleAdminHashed());
     })
 
+    it('Grant a new admin and check its role', async () => {
+        const contract = await deploy();
+
+        const [founder, newAdmin, notAdmin] = await ethers.getSigners();
+
+        await expect(await addAdmin(contract, newAdmin.address))
+            .to
+            .emit(contract, 'RoleGranted')
+            .withArgs(getRoleAdminHashed(), newAdmin.address, founder.address);
+
+        expect(await isAdmin(contract, newAdmin.address)).to.be.true;
+    })
+
 
     })
 })
