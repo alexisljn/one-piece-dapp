@@ -84,6 +84,18 @@ describe('Administration Contract', () => {
         ;
     })
 
+    it("Non-admin account try to grant a non-admin account of role admin", async () => {
+        const contract = await deploy();
+
+        const [founder, notAdmin, secondNotAdmin] = await ethers.getSigners();
+
+        await expect(addAdmin(contract, secondNotAdmin.address, notAdmin))
+            .to
+            .be
+            .revertedWith("is missing role")
+        ;
+    })
+
     })
 
 
