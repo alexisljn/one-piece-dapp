@@ -35,7 +35,13 @@ const getRoleAdminOfRoleAdmin = async (administrationContract) => {
     return await administrationContract.getRoleAdminOfRoleAdmin();
 }
 
-const renounceRoleAdmin = async (administrationContract) => {
+const renounceRoleAdmin = async (administrationContract, thirdPartyAccount = null) => {
+    if (thirdPartyAccount != null) {
+        const administrationContractToThirdParty = administrationContract.connect(thirdPartyAccount);
+
+        return await administrationContractToThirdParty.renounceRoleAdmin();
+    }
+
     return await administrationContract.renounceRoleAdmin();
 }
 
