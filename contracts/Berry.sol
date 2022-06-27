@@ -25,6 +25,11 @@ contract Berry is IERC20 {
     mapping(address => uint) private balances;
     mapping(address => mapping(address => uint)) private allowed;
 
+    modifier onlyAdmin() {
+        require(administrationContract.isAdmin(msg.sender), "Only admins are allowed");
+        _;
+    }
+
     constructor(address administrationContractAddress) {
 
         require(administrationContractAddress.supportsInterface
