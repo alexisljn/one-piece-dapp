@@ -68,8 +68,22 @@ describe('Administration Contract', () => {
 
     })
 
+    it('Admin try to revoke his role by calling revokeRole directly', async () => {
+        const contract = await deploy();
+
+        const [founder, newAdmin] = await ethers.getSigners();
+
+        await addAdmin(contract, newAdmin.address);
 
         expect(await isAdmin(contract, newAdmin.address)).to.be.true;
+
+        await expect(removeAdmin(contract, newAdmin.address, newAdmin))
+            .to
+            .be
+            .revertedWith("You cannot revoke your role admin")
+        ;
+    })
+
     })
 
 
