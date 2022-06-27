@@ -24,7 +24,7 @@ contract Administration is AccessControl {
         AccessControl.revokeRole(ROLE_ADMIN, account);
     }
 
-    function isAdmin(address account) public view returns(bool) {
+    function isAdmin(address account) override external view returns(bool) {
         return AccessControl.hasRole(ROLE_ADMIN, account);
     }
 
