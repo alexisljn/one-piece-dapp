@@ -33,6 +33,8 @@ contract Administration is AccessControl {
     }
 
     function renounceRoleAdmin() external {
+        require(msg.sender != founder, "founder cannot renounce to role admin");
+
         AccessControl.renounceRole(ROLE_ADMIN, msg.sender);
     }
 
