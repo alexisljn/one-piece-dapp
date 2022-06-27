@@ -96,6 +96,22 @@ describe('Administration Contract', () => {
         ;
     })
 
+    it("Admin user try to revoke role admin of founder", async () => {
+        const contract = await deploy();
+
+        const [founder, newAdmin] = await ethers.getSigners();
+
+        await addAdmin(contract, newAdmin.address);
+
+        expect(await isAdmin(contract, newAdmin.address)).to.be.true;
+
+        await expect(removeAdmin(contract, founder.address, newAdmin))
+            .to
+            .be
+            .revertedWith('founder will always be admin')
+        ;
+    })
+
     })
 
 
