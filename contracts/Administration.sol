@@ -1,8 +1,10 @@
 pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts/access/AccessControl.sol";
+import "@openzeppelin/contracts/utils/introspection/ERC165.sol";
+import "./interfaces/AdministrationInterface.sol";
 
-contract Administration is AccessControl {
+contract Administration is ERC165, AccessControl, AdministrationInterface {
 
     address public founder;
     bytes32 public constant ROLE_ADMIN = keccak256("ROLE_ADMIN");
@@ -38,4 +40,7 @@ contract Administration is AccessControl {
         AccessControl.renounceRole(ROLE_ADMIN, msg.sender);
     }
 
+    function supportsInterface(bytes4 interfaceId) public view override(AccessControl, ERC165) returns(bool) {
+        return interfaceId == type(AdministrationInterface).interfaceId || interfaceId == type(ERC165).interfaceId;
+    }
 }
