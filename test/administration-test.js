@@ -64,6 +64,10 @@ describe('Administration Contract', () => {
             .withArgs(getRoleAdminHashed(), newAdmin.address, newAdmin.address)
         ;
 
+        expect(await isAdmin(contract, newAdmin.address)).to.be.false;
+
+    })
+
 
         expect(await isAdmin(contract, newAdmin.address)).to.be.true;
     })
