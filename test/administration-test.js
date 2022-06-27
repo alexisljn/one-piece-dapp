@@ -112,6 +112,12 @@ describe('Administration Contract', () => {
         ;
     })
 
+    it('Non-admin account is actually not an admin', async () => {
+        const contract = await deploy();
+
+        const [founder, notAdmin] = await ethers.getSigners();
+
+        expect(await isAdmin(contract, notAdmin.address)).to.be.false;
     })
 
 
