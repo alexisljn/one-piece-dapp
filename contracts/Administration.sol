@@ -7,7 +7,7 @@ import "./interfaces/AdministrationInterface.sol";
 contract Administration is ERC165, AccessControl, AdministrationInterface {
 
     address public founder;
-    bytes32 public constant ROLE_ADMIN = keccak256("ROLE_ADMIN");
+    bytes32 private constant ROLE_ADMIN = keccak256("ROLE_ADMIN");
 
     constructor() {
         founder = msg.sender;
