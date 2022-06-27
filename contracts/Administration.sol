@@ -19,7 +19,7 @@ contract Administration is AccessControl {
 
     function revokeAdmin(address account) external onlyRole(getRoleAdmin(ROLE_ADMIN)) {
         require(account != founder, "founder will always be admin");
-        require(msg.sender != account, "You cannot revoke yourself your role admin");
+        require(msg.sender != account, "You cannot revoke your role admin");
 
         AccessControl.revokeRole(ROLE_ADMIN, account);
     }
