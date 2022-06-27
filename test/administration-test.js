@@ -120,6 +120,13 @@ describe('Administration Contract', () => {
         expect(await isAdmin(contract, notAdmin.address)).to.be.false;
     })
 
+    it('Founder try to renounce to his role admin', async () => {
+        const contract = await deploy();
 
+        await expect(renounceRoleAdmin(contract))
+            .to
+            .be
+            .revertedWith('founder cannot renounce to role admin')
+        ;
     })
 })
