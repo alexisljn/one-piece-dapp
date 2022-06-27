@@ -49,6 +49,21 @@ describe('Administration Contract', () => {
         expect(await isAdmin(contract, newAdmin.address)).to.be.false;
     })
 
+    it('Admin renounce to role', async () => {
+        const contract = await deploy();
+
+        const [founder, newAdmin] = await ethers.getSigners();
+
+        await addAdmin(contract, newAdmin.address);
+
+        expect(await isAdmin(contract, newAdmin.address)).to.be.true;
+
+        await expect(await renounceRoleAdmin(contract, newAdmin))
+            .to
+            .emit(contract, 'RoleRevoked')
+            .withArgs(getRoleAdminHashed(), newAdmin.address, newAdmin.address)
+        ;
+
 
         expect(await isAdmin(contract, newAdmin.address)).to.be.true;
     })
