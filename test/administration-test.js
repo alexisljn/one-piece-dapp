@@ -1,19 +1,5 @@
 const { expect } = require('chai');
-const {deploy, isAdmin, getRoleAdminOfRoleAdmin, addAdmin, getRoleAdminHashed, removeAdmin} = require("./helpers/AdministrationTestHelper");
-
-// Deploiement
-// founder est bien admin (hasRole)
-// Le role pour gerer le role admin est bien role admin
-// Ajout d'un admin
-// Retrait d'un admin
-// Renoncement role
-
-// NEG
-// Retrait d'un admin par lui même
-// Ajout d'un admin par un user non admin
-// Retrait du role admin du founder
-// hasRole d'un user non admin
-
+const {deploy, isAdmin, getRoleAdminOfRoleAdmin, addAdmin, getRoleAdminHashed, removeAdmin, renounceRoleAdmin} = require("./helpers/AdministrationTestHelper");
 
 describe('Administration Contract', () => {
 
@@ -39,7 +25,9 @@ describe('Administration Contract', () => {
         await expect(await addAdmin(contract, newAdmin.address))
             .to
             .emit(contract, 'RoleGranted')
-            .withArgs(getRoleAdminHashed(), newAdmin.address, founder.address);
+            .withArgs(getRoleAdminHashed(), newAdmin.address, founder.address)
+        ;
+
 
         expect(await isAdmin(contract, newAdmin.address)).to.be.true;
     })
