@@ -1,12 +1,15 @@
 import React, {useContext} from "react";
 import {UserContext} from "../../../App";
+import {LogStatus} from "./LogStatus";
+import {UserContextType} from "../../../types/UserContextType";
 interface HeaderProps {
-    connect: () => void;
+    connectWallet: () => void;
+    signInWithEthereum: () => void;
 }
 
-export function Header({connect}: HeaderProps) {
+export function Header({connectWallet, signInWithEthereum}: HeaderProps) {
 
-    const {user} = useContext(UserContext);
+    const {user, isLogged} = useContext<UserContextType>(UserContext);
     console.log("val", user)
 
     return (
