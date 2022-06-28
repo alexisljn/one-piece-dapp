@@ -7,7 +7,6 @@ import "@openzeppelin/contracts/utils/introspection/ERC165.sol";
 import "./interfaces/AdministrationInterface.sol";
 import "hardhat/console.sol";
 
-// Mettre des _ pour les attributs/fonctions private et internal
 contract Berry is IERC20 {
 
     using ERC165Checker for address;
@@ -17,7 +16,7 @@ contract Berry is IERC20 {
     uint8 public decimals = 10;
     uint32 constant private INITIAL_SUPPLY = 100000000; // Useful ?
     uint256 public override totalSupply;
-    AdministrationInterface administrationContract;
+    AdministrationInterface private administrationContract;
 
     address public founder;
     bytes32 public constant ROLE_ADMIN = keccak256("ROLE_ADMIN");
