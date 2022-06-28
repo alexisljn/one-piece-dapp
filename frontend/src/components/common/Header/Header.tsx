@@ -17,10 +17,7 @@ export function Header({connectWallet, signInWithEthereum}: HeaderProps) {
             <div className="row">
                 <div className="col col-lg-11"></div>
                 <div className="col col-lg-1">
-                    {user
-                        ? <p>Connecté !</p>
-                        : <button type="button" className="btn btn-primary" onClick={connect}>Connexion</button>
-                    }
+                    <LogStatus connectWallet={connectWallet} signInWithEthereum={signInWithEthereum}/>
                 </div>
             </div>
         </div>
