@@ -30,6 +30,8 @@ contract Berry is IERC20 {
         _;
     }
 
+    event AllowanceChanged(string action, address indexed owner, address indexed spender, uint amount);
+
     constructor(address administrationContractAddress) {
 
         require(administrationContractAddress.supportsInterface
