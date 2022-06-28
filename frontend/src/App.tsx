@@ -24,7 +24,7 @@ function App() {
         }
     }, []);
 
-    async function connect() {
+    async function connectWallet() {
         try {
             const userAddress: Address[] = await provider?.send("eth_requestAccounts", []);
             setUser(userAddress[0]);
