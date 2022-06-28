@@ -22,6 +22,13 @@ contract Berry is IERC20 {
 
     mapping(address => uint) private balances;
     mapping(address => mapping(address => uint)) private allowed;
+    mapping(address => BerryRequest) _pendingBerryRequest;
+
+    struct BerryRequest {
+        uint berryAmount;
+        uint ethAmount;
+        uint startedAt;
+    }
 
     modifier onlyAdmin() {
         require(administrationContract.isAdmin(msg.sender), "Only admins are allowed");
