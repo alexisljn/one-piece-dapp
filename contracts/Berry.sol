@@ -70,22 +70,6 @@ contract Berry is IERC20 {
         return allowed[owner][spender];
     }
 
-    function increaseAllowance(address spender, uint amount) external {
-        require(balances[msg.sender] >= allowed[msg.sender][spender] + amount, "Lack of funds in balance");
-
-        allowed[msg.sender][spender] += amount;
-
-        emit AllowanceChanged("Increase", msg.sender, spender, amount);
-    }
-
-    function decreaseAllowance(address spender, uint amount) external {
-        require(allowed[msg.sender][spender] - amount >= 0, "Allowance cannot be lower to 0");
-
-        allowed[msg.sender][spender] -= amount;
-
-        emit AllowanceChanged("Decrease", msg.sender, spender, amount);
-    }
-
     function approve(address spender, uint amount) override external returns(bool) {
         require(balances[msg.sender] >= amount, "Lack of funds in balance");
 
@@ -116,6 +100,22 @@ contract Berry is IERC20 {
         console.log("Value: %s", amount);
 
         return true;
+    }
+
+    function increaseAllowance(address spender, uint amount) external {
+        require(balances[msg.sender] >= allowed[msg.sender][spender] + amount, "Lack of funds in balance");
+
+        allowed[msg.sender][spender] += amount;
+
+        emit AllowanceChanged("Increase", msg.sender, spender, amount);
+    }
+
+    function decreaseAllowance(address spender, uint amount) external {
+        require(allowed[msg.sender][spender] - amount >= 0, "Allowance cannot be lower to 0");
+
+        allowed[msg.sender][spender] -= amount;
+
+        emit AllowanceChanged("Decrease", msg.sender, spender, amount);
     }
 
     function setAdministrationContract(address administrationContactAddress) public onlyAdmin {
