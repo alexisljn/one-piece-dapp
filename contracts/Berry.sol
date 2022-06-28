@@ -79,6 +79,13 @@ contract Berry is IERC20 {
         emit AllowanceChanged("Increase", msg.sender, spender, amount);
     }
 
+    function decreaseAllowance(address spender, uint amount) external {
+        require(allowed[msg.sender][spender] - amount >= 0, "Allowance cannot be lower to 0");
+
+        allowed[msg.sender][spender] -= amount;
+
+        emit AllowanceChanged("Decrease", msg.sender, spender, amount);
+    }
 
     function approve(address spender, uint amount) override external returns(bool) {
         require(balances[msg.sender] >= amount, "Lack of funds in balance");
