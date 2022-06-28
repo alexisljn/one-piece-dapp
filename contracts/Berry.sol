@@ -123,6 +123,19 @@ contract Berry is IERC20 {
 
         emit AllowanceChanged("Reset", owner, spender, 0);
     }
+
+    //TODO Implement later
+    function getBerryPrice(uint amount) external;
+
+    //TODO Implement later
+    function payForBerry() payable external;
+
+    //TODO Implement later
+    receive() payable external;
+
+    //TODO Implement later
+    function withDrawEth() external onlyAdmin;
+
     function setAdministrationContract(address administrationContactAddress) public onlyAdmin {
         require(administrationContractAddress.supportsInterface(type(AdministrationInterface).interfaceId),
             'Administration contract does not support Administration interface'
@@ -130,6 +143,18 @@ contract Berry is IERC20 {
 
         administrationContract = AdministrationInterface(administrationContractAddress);
     }
+
+    //TODO Implement later
+    function _getEthUsdPrice() private view returns(uint);
+
+    //TODO Implement later
+    function _getEthDecimals() private view returns(uint);
+
+    //TODO Implement later
+    function _createBerryRequest() private;
+
+    //TODO Implement later
+    function _checkBerryRequest() private;
 
     function _mint(address account, uint amount) internal {
         totalSupply += amount;
