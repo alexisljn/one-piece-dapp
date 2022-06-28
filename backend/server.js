@@ -1,11 +1,11 @@
 const express = require('express')
 const app = express()
 const port = 3000
-const cors = require('cors');
+const cors = require("cors");
 const bodyParser = require("body-parser");
 const {generateNonceChallenge} = require('./managers/AuthManager');
 
-app.use(cors());
+app.use(cors({origin: 'http://localhost:3000'}));
 app.use(bodyParser.json());
 
 app.get('/', (req, res) => {
