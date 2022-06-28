@@ -3,12 +3,18 @@ const app = express()
 const port = 3000
 const cors = require('cors');
 const bodyParser = require("body-parser");
+const {generateNonceChallenge} = require('./managers/AuthManager');
 
 app.use(cors());
 app.use(bodyParser.json());
 
 app.get('/', (req, res) => {
     res.send('Hello World!')
+})
+
+app.get('/auth/nonce', (req, res) => {
+    console.log('/auth/nonce');
+    res.json({nonce: generateNonceChallenge()});
 })
 
 
