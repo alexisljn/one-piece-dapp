@@ -34,10 +34,22 @@ function App() {
         }
     }
 
+    async function signInWithEthereum() {
+        try {
+            const headers = new Headers();
+            headers.append('Content-Type', 'application/json');
+            const response = await fetch("http://localhost:8000/login", {headers, method: "POST", body: JSON.stringify({signature: "toto"})});
+            console.log(await response.json());
+        } catch (error: unknown) {
+            console.error(error);
+        }
+        // setIsLogged((prevState) => !prevState);
+    }
+
     return (
         <div>
-            <UserContext.Provider value={{user: user, provider: provider}}>
-                <Header connect={connect}/>
+            <UserContext.Provider value={{user, provider, isLogged}}>
+                <Header connectWallet={connectWallet} signInWithEthereum={signInWithEthereum}/>
                 <Routes>
                   {renderRoutes(routes)}
                 </Routes>
