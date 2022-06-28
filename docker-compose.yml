@@ -31,4 +31,3 @@ services:
     ports:
       - "8000:3000"
     command: sh -c "npm install --verbose && npx nodemon server.js"
-
