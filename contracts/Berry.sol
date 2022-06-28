@@ -2,20 +2,51 @@
 pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import "@openzeppelin/contracts/utils/introspection/ERC165Checker.sol";
+import "@openzeppelin/contracts/utils/introspection/ERC165.sol";
+import "./interfaces/AdministrationInterface.sol";
+import "hardhat/console.sol";
 
 contract Berry is IERC20 {
+
+    using ERC165Checker for address;
+
     string public name = "Berry";
     string public symbol = "BER";
     uint8 public decimals = 10;
+    uint32 constant private INITIAL_SUPPLY = 100000000; // Useful ?
     uint256 public override totalSupply;
+    AdministrationInterface private administrationContract;
+
     address public founder;
+
     mapping(address => uint) private balances;
     mapping(address => mapping(address => uint)) private allowed;
+    mapping(address => BerryRequest) _pendingBerryRequest;
 
-    constructor() {
+    struct BerryRequest {
+        uint berryAmount;
+        uint ethAmount;
+        uint startedAt;
+    }
+
+    modifier onlyAdmin() {
+        require(administrationContract.isAdmin(msg.sender), "Only admins are allowed");
+        _;
+    }
+
+    event AllowanceChanged(string indexed action, address indexed owner, address indexed spender, uint amount);
+
+    constructor(address administrationContractAddress) {
+        setAdministrationContract(administrationContractAddress);
+
         founder = msg.sender;
-        totalSupply = 1000000 * (10**decimals); // 1 million at start
-        //_mint(founder, totalSupply);
+
+        uint initialSupplyInUnit = INITIAL_SUPPLY  * (10 ** decimals);
+        _mint(founder, initialSupplyInUnit); // 100 million at start
+
+        console.log("Deployed by: ", msg.sender);
+        console.log("Deployed with supply: %s", initialSupplyInUnit);
     }
 
     function balanceOf(address account) override external view returns(uint) {
@@ -23,13 +54,15 @@ contract Berry is IERC20 {
     }
 
     function transfer(address to, uint amount) override external returns(bool) {
-        require(balances[msg.sender] >= amount, "Insufficient funds in balance");
+        require(balances[msg.sender] >= amount, "Lack of funds in balance");
 
         balances[msg.sender] -= amount;
         balances[to] += amount;
 
         emit Transfer(msg.sender, to, amount);
-
+        console.log("Sender: ", msg.sender);
+        console.log("Receiver: ", to);
+        console.log("Value: %s", amount);
         return true;
     }
 
@@ -38,34 +71,96 @@ contract Berry is IERC20 {
     }
 
     function approve(address spender, uint amount) override external returns(bool) {
-        require(balances[msg.sender] >= amount, "Insufficient funds in balance ");
+        require(balances[msg.sender] >= amount, "Lack of funds in balance");
 
         allowed[msg.sender][spender] = amount;
 
         emit Approval(msg.sender, spender, amount);
-
+        console.log("Sender: ", msg.sender);
+        console.log("Spender: ", spender);
+        console.log("Value: %s", amount);
         return true;
     }
 
     function transferFrom(address from, address to, uint amount) override external returns(bool) {
-        require(allowed[from][msg.sender] >= amount, "Insufficient funds in allowance");
+        require(allowed[from][msg.sender] >= amount, "Lack of funds in allowance");
+        require(balances[from] >= amount, "Lack of funds in balance");
 
         allowed[from][msg.sender] -= amount;
+
+        // call à transfer non ?
 
         balances[from] -= amount;
         balances[to] += amount;
 
         emit Transfer(msg.sender, to, amount);
+        console.log("Sender: ", from);
+        console.log("Spender: ", msg.sender);
+        console.log("Receiver: ", to);
+        console.log("Value: %s", amount);
 
         return true;
     }
 
-    function _mint(address account, uint amount) internal {
+    function increaseAllowance(address spender, uint amount) external {
+        require(balances[msg.sender] >= allowed[msg.sender][spender] + amount, "Lack of funds in balance");
+
+        allowed[msg.sender][spender] += amount;
+
+        emit AllowanceChanged("Increase", msg.sender, spender, amount);
     }
 
+    function decreaseAllowance(address spender, uint amount) external {
+        require(allowed[msg.sender][spender] - amount >= 0, "Allowance cannot be lower to 0");
 
-// Implémenter les méthodes de l'interface
+        allowed[msg.sender][spender] -= amount;
 
+        emit AllowanceChanged("Decrease", msg.sender, spender, amount);
+    }
 
+    function resetAllowance(address owner, address spender) external {
+        allowed[owner][spender] = 0;
 
+        emit AllowanceChanged("Reset", owner, spender, 0);
+    }
+
+    //TODO Implement later
+    function getBerryPrice(uint amount) external;
+
+    //TODO Implement later
+    function payForBerry() payable external;
+
+    //TODO Implement later
+    receive() payable external;
+
+    //TODO Implement later
+    function withDrawEth() external onlyAdmin;
+
+    function setAdministrationContract(address administrationContactAddress) public onlyAdmin {
+        require(administrationContractAddress.supportsInterface(type(AdministrationInterface).interfaceId),
+            'Administration contract does not support Administration interface'
+        );
+
+        administrationContract = AdministrationInterface(administrationContractAddress);
+    }
+
+    //TODO Implement later
+    function _getEthUsdPrice() private view returns(uint);
+
+    //TODO Implement later
+    function _getEthDecimals() private view returns(uint);
+
+    //TODO Implement later
+    function _createBerryRequest() private;
+
+    //TODO Implement later
+    function _checkBerryRequest() private;
+
+    function _mint(address account, uint amount) internal {
+        totalSupply += amount;
+
+        balances[account] = amount;
+
+        emit Transfer(address(0), account, amount);
+    }
 }
