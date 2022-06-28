@@ -19,7 +19,6 @@ contract Berry is IERC20 {
     AdministrationInterface private administrationContract;
 
     address public founder;
-    bytes32 public constant ROLE_ADMIN = keccak256("ROLE_ADMIN");
 
     mapping(address => uint) private balances;
     mapping(address => mapping(address => uint)) private allowed;
