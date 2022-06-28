@@ -21,3 +21,13 @@ services:
       - "3000:3000"
     command: sh -c "npm install --verbose && npm start"
     stdin_open: true
+
+  backend:
+    image: node:16
+    container_name: backend
+    working_dir: /home/node/app
+    volumes:
+      - ./backend:/home/node/app
+    ports:
+      - "8000:3000"
+    command: sh -c "npm install --verbose && npx nodemon server.js"
