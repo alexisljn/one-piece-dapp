@@ -50,11 +50,6 @@ contract Berry is IERC20 {
         console.log("Deployed with supply: %s", initialSupplyInUnit);
     }
 
-    function testAdmin() public view returns(bool) {
-        require(administrationContract.isAdmin(msg.sender), "Not an admin");
-        return administrationContract.isAdmin(msg.sender);
-    }
-
     function balanceOf(address account) override external view returns(uint) {
         return balances[account];
     }
