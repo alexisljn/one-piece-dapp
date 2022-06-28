@@ -118,6 +118,11 @@ contract Berry is IERC20 {
         emit AllowanceChanged("Decrease", msg.sender, spender, amount);
     }
 
+    function resetAllowance(address owner, address spender) external {
+        allowed[owner][spender] = 0;
+
+        emit AllowanceChanged("Reset", owner, spender, 0);
+    }
     function setAdministrationContract(address administrationContactAddress) public onlyAdmin {
         require(administrationContractAddress.supportsInterface(type(AdministrationInterface).interfaceId),
             'Administration contract does not support Administration interface'
