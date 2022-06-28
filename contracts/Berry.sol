@@ -32,18 +32,12 @@ contract Berry is IERC20 {
     event AllowanceChanged(string action, address indexed owner, address indexed spender, uint amount);
 
     constructor(address administrationContractAddress) {
-
-        require(administrationContractAddress.supportsInterface
-            (
-                type(AdministrationInterface).interfaceId
-            ),
-            'Administration contract does not support Administration interface'
-        );
+        setAdministrationContract(administrationContractAddress);
 
         founder = msg.sender;
+
         uint initialSupplyInUnit = INITIAL_SUPPLY  * (10 ** decimals);
         _mint(founder, initialSupplyInUnit); // 100 million at start
-        administrationContract = AdministrationInterface(administrationContractAddress);
 
         console.log("Deployed by: ", msg.sender);
         console.log("Deployed with supply: %s", initialSupplyInUnit);
@@ -116,6 +110,14 @@ contract Berry is IERC20 {
         console.log("Value: %s", amount);
 
         return true;
+    }
+
+    function setAdministrationContract(address administrationContactAddress) public onlyAdmin {
+        require(administrationContractAddress.supportsInterface(type(AdministrationInterface).interfaceId),
+            'Administration contract does not support Administration interface'
+        );
+
+        administrationContract = AdministrationInterface(administrationContractAddress);
     }
 
     function _mint(address account, uint amount) internal {
