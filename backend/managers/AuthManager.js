@@ -39,6 +39,24 @@ function createJwtPayload(siweMessage, signature) {
     };
 }
 
+function requireLogin(req, res, next) {
+    try {
+        if (!req.headers.hasOwnProperty('Authorization'.toLowerCase())) {
+            throw new MissingTokenError();
+        }
+
+        const token = req.headers['Authorization'.toLowerCase()].split(' ')[1];
+
+        jwt.verify(token, process.env.APPLICATION_SECRET);
+
+        next();
+    } catch (error) {
+        console.error(error); // Log on server
+        res.json({error: error.message});
+        res.status(error.status || 401);
+    }
+}
+
 exports.nonceChallenge = nonceChallenge;
 exports.generateNonceChallenge = generateNonceChallenge;
 exports.challengeNonce = challengeNonce;
