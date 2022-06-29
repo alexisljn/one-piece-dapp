@@ -6,6 +6,8 @@ const bodyParser = require("body-parser");
 const {generateNonceChallenge, challengeNonce} = require('./managers/AuthManager');
 const {SiweMessage, SiweError} = require("siwe");
 const {NonceError} = require('./errors/NonceError');
+const {areParametersMissing} = require("./helpers/UtilHelper");
+
 require('dotenv').config();
 
 app.use(cors({origin: 'http://localhost:3000'}));
@@ -24,6 +26,8 @@ app.get('/auth/nonce', (req, res) => {
 app.post('/auth/login', async (req, res) => {
     try {
         console.log('/auth/login');
+
+        areParametersMissing(req.body, ['message', 'signature']);
 
         const {message, signature} = req.body;
 
