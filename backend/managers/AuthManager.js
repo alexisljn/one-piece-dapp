@@ -25,6 +25,10 @@ function isNonceValid(nonce) {
     return (nonceChallenge[nonce] && nonceChallenge[nonce] + TIMESTAMP_EXPIRATION_DELAY >= Date.now());
 }
 
+function cleanNonce(nonce) {
+    delete nonceChallenge[nonce];
+}
+
 function generateJwtToken(siweMessage, signature) {
     return jwt.sign(createJwtPayload(siweMessage, signature), process.env.APPLICATION_SECRET)
 }
@@ -60,5 +64,6 @@ function requireLogin(req, res, next) {
 exports.nonceChallenge = nonceChallenge;
 exports.generateNonceChallenge = generateNonceChallenge;
 exports.challengeNonce = challengeNonce;
+exports.cleanNonce = cleanNonce;
 exports.generateJwtToken = generateJwtToken;
 exports.requireLogin = requireLogin;
