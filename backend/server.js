@@ -6,6 +6,7 @@ const bodyParser = require("body-parser");
 const {generateNonceChallenge, challengeNonce} = require('./managers/AuthManager');
 const {SiweMessage, SiweError} = require("siwe");
 const {NonceError} = require('./errors/NonceError');
+require('dotenv').config();
 
 app.use(cors({origin: 'http://localhost:3000'}));
 app.use(bodyParser.json());
