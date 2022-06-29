@@ -1,5 +1,7 @@
-const { generateNonce } = require("siwe");
-const { NonceError } = require('../errors/NonceError');
+const {generateNonce} = require("siwe");
+const {NonceError} = require('../errors/NonceError');
+const {MissingTokenError} = require("../errors/MissingTokenError");
+const jwt = require("jsonwebtoken");
 
 const nonceChallenge = {};
 
