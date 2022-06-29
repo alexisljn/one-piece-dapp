@@ -1,4 +1,5 @@
-const { generateNonce } = require("siwe")
+const { generateNonce } = require("siwe");
+const { NonceError } = require('../errors/NonceError');
 
 const nonceChallenge = {};
 
@@ -10,5 +11,12 @@ function generateNonceChallenge() {
     return nonce;
 }
 
+function challengeNonce(nonce) {
+    if (!isNonceValid(nonce)) {
+        throw new NonceError();
+    }
+}
+
 exports.nonceChallenge = nonceChallenge;
 exports.generateNonceChallenge = generateNonceChallenge;
+exports.challengeNonce = challengeNonce;
