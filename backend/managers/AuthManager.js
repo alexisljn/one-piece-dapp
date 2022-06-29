@@ -60,3 +60,5 @@ function requireLogin(req, res, next) {
 exports.nonceChallenge = nonceChallenge;
 exports.generateNonceChallenge = generateNonceChallenge;
 exports.challengeNonce = challengeNonce;
+exports.generateJwtToken = generateJwtToken;
+exports.requireLogin = requireLogin;
