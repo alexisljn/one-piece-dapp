@@ -25,6 +25,10 @@ function isNonceValid(nonce) {
     return (nonceChallenge[nonce] && nonceChallenge[nonce] + TIMESTAMP_EXPIRATION_DELAY >= Date.now());
 }
 
+function generateJwtToken(siweMessage, signature) {
+    return jwt.sign(createJwtPayload(siweMessage, signature), process.env.APPLICATION_SECRET)
+}
+
 exports.nonceChallenge = nonceChallenge;
 exports.generateNonceChallenge = generateNonceChallenge;
 exports.challengeNonce = challengeNonce;
