@@ -29,6 +29,16 @@ function generateJwtToken(siweMessage, signature) {
     return jwt.sign(createJwtPayload(siweMessage, signature), process.env.APPLICATION_SECRET)
 }
 
+function createJwtPayload(siweMessage, signature) {
+    const {nonce, address} = siweMessage
+
+    return {
+        nonce,
+        address,
+        signature
+    };
+}
+
 exports.nonceChallenge = nonceChallenge;
 exports.generateNonceChallenge = generateNonceChallenge;
 exports.challengeNonce = challengeNonce;
