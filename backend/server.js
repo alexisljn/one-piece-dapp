@@ -7,6 +7,7 @@ const {generateNonceChallenge, challengeNonce} = require('./managers/AuthManager
 const {SiweMessage, SiweError} = require("siwe");
 const {NonceError} = require('./errors/NonceError');
 const {areParametersMissing} = require("./helpers/UtilHelper");
+const {MissingParametersError} = require("./errors/MissingParametersError");
 
 require('dotenv').config();
 
@@ -43,6 +44,8 @@ app.post('/auth/login', async (req, res) => {
         res.json({toto: "momo"});
     } catch (error) {
         console.log(error); // Log into server
+
+        /* Specific handle of SiweError from Siwe package */
         if (error.hasOwnProperty('error') && error.error instanceof SiweError) {
             const {type} = error.error;
 
@@ -51,12 +54,18 @@ app.post('/auth/login', async (req, res) => {
             return;
         }
 
-        if (error instanceof NonceError) {
-            res.status(401);
-            res.json({error: error.message});
-        } else {
-            res.status(500);
-            res.json({error: 'Something went wrong'});
+        switch (error.constructor) {
+            case MissingParametersError:
+                res.status(error.status);
+                res.json({error: error.message});
+                break;
+            case NonceError:
+                res.status(error.status);
+                res.json({error: error.message});
+                break;
+            default:
+                res.status(500);
+                res.json({error: 'Something went wrong'});
         }
     }
 })
