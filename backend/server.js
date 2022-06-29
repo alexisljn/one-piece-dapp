@@ -32,16 +32,17 @@ app.post('/auth/login', async (req, res) => {
 
         const {message, signature} = req.body;
 
-        const preparedMessage = new SiweMessage(message)
-        const fields = await preparedMessage.verify({signature});
+        const siweMessage = new SiweMessage(message);
+
+        const fields = await siweMessage.verify({signature});
 
         const {nonce} = fields.data;
 
         challengeNonce(nonce);
 
-        // Generate jwt
+        const accessToken = generateJwtToken(siweMessage, signature);
 
-        res.json({toto: "momo"});
+        res.json({accessToken});
     } catch (error) {
         console.log(error); // Log into server
 
