@@ -71,8 +71,6 @@ function App() {
         }
     }, [provider]);
 
-    }
-
     return (
         <div>
             <UserContext.Provider value={{user, provider, isLogged}}>
