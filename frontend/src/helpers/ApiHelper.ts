@@ -1,15 +1,15 @@
 import {generateAuthorizationHeaderValue, getAccessToken} from "./AuthHelper";
-import {MethodAllowed, RequestBodies} from "../types/FetchOptions";
+import {FetchOptions} from "../types/FetchOptions";
 
-export async function fetchCall(url: string, method: MethodAllowed = "GET", requestBody: RequestBodies|null = null, authorization: boolean = false)
+export async function fetchCall(url: string, {method = "GET", body = null, authorization = false}: FetchOptions = {method: "GET", body: null, authorization: false})
 {
     const headers: Headers = new Headers();
-    console.log("process env", process.env.REACT_APP_BACKEND_URL);
-    if (method === "GET" && requestBody) {
+
+    if (method === "GET" && body) {
         throw new Error('body is not allowed in GET request case');
     }
 
-    if (requestBody) {
+    if (body) {
         headers.append("Content-Type", "application/json");
     }
 
@@ -28,7 +28,7 @@ export async function fetchCall(url: string, method: MethodAllowed = "GET", requ
         default:
             response = await fetch(
                 `${process.env.REACT_APP_BACKEND_URL}/${url}`,
-                {headers, method, body: JSON.stringify(requestBody)}
+                {headers, method, body: JSON.stringify(body)}
             );
     }
 
