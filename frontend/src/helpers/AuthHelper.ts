@@ -1,5 +1,7 @@
 import {fetchCall} from "./ApiHelper";
-import jwt_decode, {JwtPayload} from "jwt-decode";
+import jwt_decode from "jwt-decode";
+import {SiweMessage} from "siwe";
+import {Signer} from "ethers";
 
 const ACCESS_TOKEN_LOCAL_STORAGE_KEY = "accessToken"
 
@@ -35,4 +37,16 @@ export function getAccessTokenPayload(): any {
     }
 
     return jwt_decode(accessToken);
+}
+
+export async function createSiweMessage(signer: Signer, nonce: string): Promise<SiweMessage> {
+    return new SiweMessage({
+        domain: window.location.host,
+        address: await signer.getAddress(),
+        statement: 'Sign in with Ethereum',
+        uri: window.location.origin,
+        version: '1',
+        chainId: 4,
+        nonce: nonce
+    });
 }
