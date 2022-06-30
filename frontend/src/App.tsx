@@ -33,15 +33,20 @@ function App() {
         })();
     }, []);
 
-    async function connectWallet() {
+    const connectWallet = useCallback(async () => {
         try {
-            const userAddress: Address[] = await provider?.send("eth_requestAccounts", []);
+
+            if (!provider) {
+                throw new Error('Please install metamask');
+            }
+
+            const userAddress: Address[] = await provider.send("eth_requestAccounts", []);
             setUser(userAddress[0]);
         } catch (error) {
             //TODO
             console.error(error);
         }
-    }
+    }, [provider]);
 
     async function signInWithEthereum() {
         try {
