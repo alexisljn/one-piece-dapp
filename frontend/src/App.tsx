@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {Routes} from "react-router-dom";
 import {routes} from "./routes/routes";
 import {renderRoutes} from "./routes/renderRoutes";
@@ -6,36 +6,77 @@ import {Header} from "./components/common/Header/Header";
 import {ethers} from "ethers";
 import {Address} from "./types/Address";
 import {UserContextType} from "./types/UserContextType";
+import {fetchCall} from "./helpers/ApiHelper";
+import {createSiweMessage, getAccessTokenPayload, hasUserAValidAccessToken} from "./helpers/AuthHelper";
 
-export const UserContext = React.createContext<UserContextType>({user: null, provider: null});
+export const UserContext = React.createContext<UserContextType>({user: null, provider: null, isLogged: false});
 
 function App() {
 
     const [user, setUser] = useState<Address|null>(null);
     const [provider, setProvider] = useState<ethers.providers.Web3Provider|null>(null);
+    const [isLogged, setIsLogged] = useState<boolean>(false);
 
     useEffect(() => {
-        if (typeof window.ethereum != "undefined") {
-            const web3provider = new ethers.providers.Web3Provider(window.ethereum as any) // https://github.com/MetaMask/providers/issues/200
-            setProvider(web3provider)
-            //TODO Message d'erreur à gérer
-        }
+        (async () => {
+            if (typeof window.ethereum != "undefined") {
+                const web3provider = new ethers.providers.Web3Provider(window.ethereum as any) // https://github.com/MetaMask/providers/issues/200
+                setProvider(web3provider)
+
+                if (await hasUserAValidAccessToken()) {
+                    const {address} = getAccessTokenPayload();
+                    setUser(address);
+                    setIsLogged(true);
+                }
+            }
+            //TODO Message d'erreur à gérer si pas ethereum injecté
+        })();
     }, []);
 
-    async function connect() {
+    const connectWallet = useCallback(async () => {
         try {
-            const userAddress: Address[] = await provider?.send("eth_requestAccounts", []);
+
+            if (!provider) {
+                throw new Error('Please install metamask');
+            }
+
+            const userAddress: Address[] = await provider.send("eth_requestAccounts", []);
             setUser(userAddress[0]);
         } catch (error) {
             //TODO
             console.error(error);
         }
+    }, [provider]);
+
+    const signInWithEthereum = useCallback(async () => {
+        try {
+
+            const {nonce} = await fetchCall('auth/nonce')
+
+            const signer = provider!.getSigner();
+
+            const siweMessage = await createSiweMessage(signer, nonce);
+
+            const preparedSiweMessage = siweMessage.prepareMessage();
+
+            const signature = await signer.signMessage(preparedSiweMessage);
+
+            const {accessToken} = await fetchCall("auth/login", {method:"POST", body:{message: siweMessage, signature}});
+
+            window.localStorage.setItem('accessToken', accessToken);
+
+            setIsLogged(true);
+        } catch (error: unknown) {
+            console.error(error);
+        }
+    }, [provider]);
+
     }
 
     return (
         <div>
-            <UserContext.Provider value={{user: user, provider: provider}}>
-                <Header connect={connect}/>
+            <UserContext.Provider value={{user, provider, isLogged}}>
+                <Header connectWallet={connectWallet} signInWithEthereum={signInWithEthereum}/>
                 <Routes>
                   {renderRoutes(routes)}
                 </Routes>
