@@ -6,9 +6,10 @@ import {UserContextType} from "../../../types/UserContextType";
 interface HeaderProps {
     connectWallet: () => void;
     signInWithEthereum: () => void;
+    logout: () => void;
 }
 
-export function Header({connectWallet, signInWithEthereum}: HeaderProps) {
+export function Header({connectWallet, signInWithEthereum, logout}: HeaderProps) {
 
     const {user, isLogged} = useContext<UserContextType>(UserContext);
     console.log("val", user)
@@ -18,7 +19,7 @@ export function Header({connectWallet, signInWithEthereum}: HeaderProps) {
             <div className="row">
                 <div className="col col-lg-11"></div>
                 <div className="col col-lg-1">
-                    <LogStatus connectWallet={connectWallet} signInWithEthereum={signInWithEthereum}/>
+                    <LogStatus connectWallet={connectWallet} signInWithEthereum={signInWithEthereum} logout={logout}/>
                 </div>
             </div>
         </div>

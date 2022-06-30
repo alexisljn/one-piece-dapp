@@ -75,7 +75,7 @@ app.post('/auth/login', async (req, res) => {
     }
 })
 
-
+// 404 and Error Middleware
 
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`)

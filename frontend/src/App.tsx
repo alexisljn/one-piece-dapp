@@ -7,7 +7,12 @@ import {ethers} from "ethers";
 import {Address} from "./types/Address";
 import {UserContextType} from "./types/UserContextType";
 import {fetchCall} from "./helpers/ApiHelper";
-import {createSiweMessage, getAccessTokenPayload, hasUserAValidAccessToken} from "./helpers/AuthHelper";
+import {
+    createSiweMessage,
+    deleteAccessToken,
+    getAccessTokenPayload,
+    hasUserAValidAccessToken
+} from "./helpers/AuthHelper";
 
 export const UserContext = React.createContext<UserContextType>({user: null, provider: null, isLogged: false});
 
@@ -71,10 +76,16 @@ function App() {
         }
     }, [provider]);
 
+    const logout = useCallback(() => {
+        setUser(null);
+        setIsLogged(false);
+        deleteAccessToken();
+    }, []);
+
     return (
         <div>
             <UserContext.Provider value={{user, provider, isLogged}}>
-                <Header connectWallet={connectWallet} signInWithEthereum={signInWithEthereum}/>
+                <Header connectWallet={connectWallet} signInWithEthereum={signInWithEthereum} logout={logout}/>
                 <Routes>
                   {renderRoutes(routes)}
                 </Routes>

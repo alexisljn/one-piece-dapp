@@ -39,6 +39,10 @@ export function getAccessTokenPayload(): any {
     return jwt_decode(accessToken);
 }
 
+export function deleteAccessToken() {
+    window.localStorage.removeItem(ACCESS_TOKEN_LOCAL_STORAGE_KEY);
+}
+
 export async function createSiweMessage(signer: Signer, nonce: string): Promise<SiweMessage> {
     return new SiweMessage({
         domain: window.location.host,
