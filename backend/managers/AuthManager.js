@@ -56,8 +56,8 @@ function requireLogin(req, res, next) {
         next();
     } catch (error) {
         console.error(error); // Log on server
-        res.json({error: error.message});
         res.status(error.status || 401);
+        res.json({error: error.message});
     }
 }
 
