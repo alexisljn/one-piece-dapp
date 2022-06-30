@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {Routes} from "react-router-dom";
 import {routes} from "./routes/routes";
 import {renderRoutes} from "./routes/renderRoutes";
@@ -6,6 +6,8 @@ import {Header} from "./components/common/Header/Header";
 import {ethers} from "ethers";
 import {Address} from "./types/Address";
 import {UserContextType} from "./types/UserContextType";
+import {fetchCall} from "./helpers/ApiHelper";
+import {createSiweMessage, getAccessTokenPayload, hasUserAValidAccessToken} from "./helpers/AuthHelper";
 
 export const UserContext = React.createContext<UserContextType>({user: null, provider: null, isLogged: false});
 
@@ -16,12 +18,19 @@ function App() {
     const [isLogged, setIsLogged] = useState<boolean>(false);
 
     useEffect(() => {
-        if (typeof window.ethereum != "undefined") {
-            const web3provider = new ethers.providers.Web3Provider(window.ethereum as any) // https://github.com/MetaMask/providers/issues/200
-            setProvider(web3provider)
-            // localStorage pour setIsLogged
-            //TODO Message d'erreur à gérer
-        }
+        (async () => {
+            if (typeof window.ethereum != "undefined") {
+                const web3provider = new ethers.providers.Web3Provider(window.ethereum as any) // https://github.com/MetaMask/providers/issues/200
+                setProvider(web3provider)
+
+                if (await hasUserAValidAccessToken()) {
+                    const {address} = getAccessTokenPayload();
+                    setUser(address);
+                    setIsLogged(true);
+                }
+            }
+            //TODO Message d'erreur à gérer si pas ethereum injecté
+        })();
     }, []);
 
     async function connectWallet() {
