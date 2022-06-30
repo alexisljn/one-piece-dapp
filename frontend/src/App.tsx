@@ -48,16 +48,29 @@ function App() {
         }
     }, [provider]);
 
-    async function signInWithEthereum() {
+    const signInWithEthereum = useCallback(async () => {
         try {
-            const headers = new Headers();
-            headers.append('Content-Type', 'application/json');
-            const response = await fetch("http://localhost:8000/login", {headers, method: "POST", body: JSON.stringify({signature: "toto"})});
-            console.log(await response.json());
+
+            const {nonce} = await fetchCall('auth/nonce')
+
+            const signer = provider!.getSigner();
+
+            const siweMessage = await createSiweMessage(signer, nonce);
+
+            const preparedSiweMessage = siweMessage.prepareMessage();
+
+            const signature = await signer.signMessage(preparedSiweMessage);
+
+            const {accessToken} = await fetchCall("auth/login", {method:"POST", body:{message: siweMessage, signature}});
+
+            window.localStorage.setItem('accessToken', accessToken);
+
+            setIsLogged(true);
         } catch (error: unknown) {
             console.error(error);
         }
-        // setIsLogged((prevState) => !prevState);
+    }, [provider]);
+
     }
 
     return (
