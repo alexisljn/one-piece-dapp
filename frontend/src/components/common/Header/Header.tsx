@@ -2,6 +2,7 @@ import React, {useContext} from "react";
 import {UserContext} from "../../../App";
 import {LogStatus} from "./LogStatus";
 import {UserContextType} from "../../../types/UserContextType";
+
 interface HeaderProps {
     connectWallet: () => void;
     signInWithEthereum: () => void;

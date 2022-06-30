@@ -16,6 +16,10 @@ export async function fetchCall(url: string, {method = "GET", body = null, autho
     if (authorization) {
         const accessToken = getAccessToken();
 
+        if (!accessToken) {
+            throw new Error('No access token');
+        }
+
         headers.append('Authorization'.toLowerCase(), generateAuthorizationHeaderValue(accessToken));
     }
 
