@@ -5,6 +5,7 @@ import {UserContextType} from "../../../types/UserContextType";
 interface LogStatusProps {
     connectWallet: () => void;
     signInWithEthereum: () => void;
+    logout: () => void;
 }
 
 type LogStatusType = "guest" | "wallet" | "connected"
@@ -19,7 +20,7 @@ function getLogStatus({user, isLogged}: Partial<UserContextType>): LogStatusType
     }
 }
 
-export function LogStatus({connectWallet, signInWithEthereum}: LogStatusProps) {
+export function LogStatus({connectWallet, signInWithEthereum, logout}: LogStatusProps) {
 
     const {user, isLogged} = useContext<UserContextType>(UserContext);
 
@@ -39,7 +40,7 @@ export function LogStatus({connectWallet, signInWithEthereum}: LogStatusProps) {
                 // Balances etc.
             }
             {logStatus === "connected" &&
-                <p>Logged</p>
+                <button type="button" className="btn btn-danger" onClick={logout}>Log out</button>
             }
         </>
     )
