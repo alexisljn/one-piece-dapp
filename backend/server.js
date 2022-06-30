@@ -39,6 +39,7 @@ app.post('/auth/login', async (req, res) => {
         const {nonce} = fields.data;
 
         challengeNonce(nonce);
+        cleanNonce(nonce);
 
         const accessToken = generateJwtToken(siweMessage, signature);
 
