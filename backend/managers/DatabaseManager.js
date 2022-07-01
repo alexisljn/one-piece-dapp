@@ -1,4 +1,14 @@
+const {initializeApp} = require("firebase/app");
+
+let firebaseInstance;
+
 let firebaseConfig;
+
+
+async function initializeFirebaseApp() {
+    setConfigValuesFromEnvVars()
+    firebaseInstance = initializeApp(firebaseConfig);
+}
 
 function setConfigValuesFromEnvVars() {
     firebaseConfig = {
