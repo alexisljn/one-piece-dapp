@@ -8,8 +8,20 @@ const {SiweMessage, SiweError} = require("siwe");
 const {NonceError} = require('./errors/NonceError');
 const {areParametersMissing} = require("./helpers/UtilHelper");
 const {MissingParametersError} = require("./errors/MissingParametersError");
+const {initializeFirebaseApp} = require("./managers/DatabaseManager");
 
+//TODO Bootstrap function
 require('dotenv').config();
+(async () => {
+    // try/catch block prevent application from crashing in case firebase initialization fails
+    try {
+        await initializeFirebaseApp();
+    } catch (error) {
+        console.error(error)
+    }
+})()
+
+
 
 app.use(cors({origin: 'http://localhost:3000'}));
 app.use(bodyParser.json());
