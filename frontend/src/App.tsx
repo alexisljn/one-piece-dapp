@@ -13,6 +13,7 @@ import {
     getAccessTokenPayload,
     hasUserAValidAccessToken
 } from "./helpers/AuthHelper";
+import {fireToast} from "./helpers/UtilHelper";
 
 export const UserContext = React.createContext<UserContextType>({user: null, provider: null, isLogged: false});
 
@@ -47,9 +48,8 @@ function App() {
 
             const userAddress: Address[] = await provider.send("eth_requestAccounts", []);
             setUser(userAddress[0]);
-        } catch (error) {
-            //TODO
-            console.error(error);
+        } catch (error: any) {
+            fireToast("error", error.message);
         }
     }, [provider]);
 
@@ -71,8 +71,8 @@ function App() {
             window.localStorage.setItem('accessToken', accessToken);
 
             setIsLogged(true);
-        } catch (error: unknown) {
-            console.error(error);
+        } catch (error: any) {
+            fireToast("error", error.message);
         }
     }, [provider]);
 
