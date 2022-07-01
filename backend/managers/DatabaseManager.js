@@ -1,4 +1,5 @@
 const {initializeApp} = require("firebase/app");
+const {getDatabase, ref, get, child} = require("firebase/database");
 const {getAuth, signInWithEmailAndPassword} = require("firebase/auth");
 
 let firebaseInstance;
@@ -32,5 +33,11 @@ async function logAsDatabaseAdmin() {
         process.env.FIREBASE_ADMIN_PASSWORD
     );
 }
+
+async function initializeDatabase() {
+    firebaseDatabase = getDatabase(firebaseInstance);
+    const dbRef = ref(firebaseDatabase);
+    const snapshot = await get(child(dbRef, 'skills'))
+    console.log(snapshot.val())
 
 }
