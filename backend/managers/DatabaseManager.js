@@ -8,9 +8,13 @@ let firebaseConfig;
 
 let databaseAdminCredentials;
 
+let firebaseDatabase;
+
 async function initializeFirebaseApp() {
     setConfigValuesFromEnvVars()
     firebaseInstance = initializeApp(firebaseConfig);
+    await logAsDatabaseAdmin();
+    await initializeDatabase()
 }
 
 function setConfigValuesFromEnvVars() {
@@ -41,3 +45,5 @@ async function initializeDatabase() {
     console.log(snapshot.val())
 
 }
+
+exports.initializeFirebaseApp = initializeFirebaseApp;
