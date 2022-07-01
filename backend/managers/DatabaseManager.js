@@ -1,9 +1,11 @@
 const {initializeApp} = require("firebase/app");
+const {getAuth, signInWithEmailAndPassword} = require("firebase/auth");
 
 let firebaseInstance;
 
 let firebaseConfig;
 
+let databaseAdminCredentials;
 
 async function initializeFirebaseApp() {
     setConfigValuesFromEnvVars()
@@ -20,4 +22,15 @@ function setConfigValuesFromEnvVars() {
         messagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID,
         appId: process.env.FIREBASE_APP_ID
     };
+}
+
+async function logAsDatabaseAdmin() {
+    const auth = getAuth();
+    databaseAdminCredentials = await signInWithEmailAndPassword(
+        auth,
+        process.env.FIREBASE_ADMIN_ID,
+        process.env.FIREBASE_ADMIN_PASSWORD
+    );
+}
+
 }
