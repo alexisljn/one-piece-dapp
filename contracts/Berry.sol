@@ -144,8 +144,6 @@ contract Berry is IERC20 {
         _administrationContract = AdministrationInterface(administrationContractAddress);
     }
 
-    //TODO Implement later
-    function _getEthUsdPrice() private view returns(uint);
     function setAggregatorV3Contract(address aggregatorV3Address) {
         require(aggregatorV3Address.supportsInterface(type(AggregatorV3Interface).interfaceId),
             "Aggregator V3 contract does not support Aggregator V3 interface"
@@ -154,6 +152,11 @@ contract Berry is IERC20 {
     //TODO Implement later
     function _getEthDecimals() private view returns(uint);
         _aggregatorV3Contract = AggregatorV3Interface(aggregatorV3Address);
+    }
+
+    function _getEthUsdPrice() private view returns(int) {
+        (,price,,,) = _aggregatorV3Contract.latestRoundData();
+        return price;
     }
 
 
