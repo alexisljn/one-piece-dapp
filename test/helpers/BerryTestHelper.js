@@ -11,4 +11,9 @@ const deployBerry = async () => {
     return await Berry.deploy(administrationContract.address, aggregatorV3Contract);
 }
 
+const getBalance = async (berryContract, account) => {
+    return await berryContract.balanceOf(account);
+}
+
 exports.deployBerry = deployBerry;
+exports.getBalance = getBalance;
