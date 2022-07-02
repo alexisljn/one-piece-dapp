@@ -35,7 +35,12 @@ const giveAllowance = async (berryContract, amount, spender, thirdPartyAccount =
     return await berryContract.approve(spender, amount);
 }
 
+const getAllowance = async (berryContract, owner, spender) => {
+    return await berryContract.allowance(owner, spender);
+}
+
 exports.deployBerry = deployBerry;
 exports.getBalance = getBalance;
 exports.transferBerry = transferBerry;
 exports.giveAllowance = giveAllowance;
+exports.getAllowance = getAllowance;
