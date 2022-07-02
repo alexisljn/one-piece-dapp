@@ -149,8 +149,6 @@ contract Berry is IERC20 {
             "Aggregator V3 contract does not support Aggregator V3 interface"
         );
 
-    //TODO Implement later
-    function _getEthDecimals() private view returns(uint);
         _aggregatorV3Contract = AggregatorV3Interface(aggregatorV3Address);
     }
 
@@ -159,6 +157,9 @@ contract Berry is IERC20 {
         return price;
     }
 
+    function _getEthDecimals() private view returns(uint8) {
+        return _aggregatorV3Contract.decimals();
+    }
 
     //TODO Implement later
     function _createBerryRequest() private;
