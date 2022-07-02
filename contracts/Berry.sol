@@ -14,6 +14,7 @@ contract Berry is IERC20 {
     string public name = "Berry";
     string public symbol = "BER";
     uint8 public decimals = 10;
+    uint32 constant private _BERRY_PER_DOLLAR = 1000000;
     uint256 public override totalSupply;
     AdministrationInterface private administrationContract;
 
