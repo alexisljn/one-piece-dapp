@@ -4,6 +4,7 @@ pragma solidity ^0.8.0;
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/utils/introspection/ERC165Checker.sol";
 import "@openzeppelin/contracts/utils/introspection/ERC165.sol";
+import "@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol";
 import "./interfaces/AdministrationInterface.sol";
 import "hardhat/console.sol";
 
@@ -17,6 +18,7 @@ contract Berry is IERC20 {
     uint32 constant private _BERRY_PER_DOLLAR = 1000000;
     uint256 public override totalSupply;
     AdministrationInterface private _administrationContract;
+    AggregatorV3Interface private _aggregatorV3Contract;
 
     address public founder;
 
@@ -144,6 +146,10 @@ contract Berry is IERC20 {
 
     //TODO Implement later
     function _getEthUsdPrice() private view returns(uint);
+    function setAggregatorV3Contract(address aggregatorV3Address) {
+        require(aggregatorV3Address.supportsInterface(type(AggregatorV3Interface).interfaceId),
+            "Aggregator V3 contract does not support Aggregator V3 interface"
+        );
 
     //TODO Implement later
     function _getEthDecimals() private view returns(uint);
