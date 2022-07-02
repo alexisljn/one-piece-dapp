@@ -16,7 +16,7 @@ contract Berry is IERC20 {
     uint8 public decimals = 10;
     uint32 constant private _BERRY_PER_DOLLAR = 1000000;
     uint256 public override totalSupply;
-    AdministrationInterface private administrationContract;
+    AdministrationInterface private _administrationContract;
 
     address public founder;
 
@@ -139,7 +139,7 @@ contract Berry is IERC20 {
             'Administration contract does not support Administration interface'
         );
 
-        administrationContract = AdministrationInterface(administrationContractAddress);
+        _administrationContract = AdministrationInterface(administrationContractAddress);
     }
 
     //TODO Implement later
