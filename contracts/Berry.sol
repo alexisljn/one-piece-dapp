@@ -14,7 +14,6 @@ contract Berry is IERC20 {
     string public name = "Berry";
     string public symbol = "BER";
     uint8 public decimals = 10;
-    uint32 constant private INITIAL_SUPPLY = 100000000; // Useful ?
     uint256 public override totalSupply;
     AdministrationInterface private administrationContract;
 
@@ -31,19 +30,17 @@ contract Berry is IERC20 {
     }
 
     modifier onlyAdmin() {
-        require(administrationContract.isAdmin(msg.sender), "Only admins are allowed");
+        require(_administrationContract.isAdmin(msg.sender), "Only admins are allowed");
         _;
     }
 
     event AllowanceChanged(string indexed action, address indexed owner, address indexed spender, uint amount);
 
-    constructor(address administrationContractAddress) {
+    constructor(address administrationContractAddress, address aggregatorV3Address) {
         setAdministrationContract(administrationContractAddress);
+        setAggregatorV3Contract(aggregatorV3Address);
 
         founder = msg.sender;
-
-        uint initialSupplyInUnit = INITIAL_SUPPLY  * (10 ** decimals);
-        _mint(founder, initialSupplyInUnit); // 100 million at start
 
         console.log("Deployed by: ", msg.sender);
         console.log("Deployed with supply: %s", initialSupplyInUnit);
