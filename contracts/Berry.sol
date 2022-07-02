@@ -153,6 +153,9 @@ contract Berry is IERC20 {
 
     //TODO Implement later
     function _getEthDecimals() private view returns(uint);
+        _aggregatorV3Contract = AggregatorV3Interface(aggregatorV3Address);
+    }
+
 
     //TODO Implement later
     function _createBerryRequest() private;
