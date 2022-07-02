@@ -15,5 +15,16 @@ const getBalance = async (berryContract, account) => {
     return await berryContract.balanceOf(account);
 }
 
+const transferBerry = async (berryContract, amount, receiver, thirdPartyAccount = null) => {
+    if (thirdPartyAccount) {
+        const berryContractToThirdParty = berryContract.connect(thirdPartyAccount);
+
+        return await berryContractToThirdParty.transfer(amount, receiver);
+    }
+
+    return await berryContract.transfer(amount, receiver);
+}
+
 exports.deployBerry = deployBerry;
 exports.getBalance = getBalance;
+exports.transferBerry = transferBerry;
