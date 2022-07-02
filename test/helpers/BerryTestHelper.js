@@ -25,6 +25,17 @@ const transferBerry = async (berryContract, amount, receiver, thirdPartyAccount 
     return await berryContract.transfer(amount, receiver);
 }
 
+const giveAllowance = async (berryContract, amount, spender, thirdPartyAccount = null) => {
+    if (thirdPartyAccount) {
+        const berryContractToThirdParty = berryContract.connect(thirdPartyAccount);
+
+        return await berryContractToThirdParty.approve(spender, amount);
+    }
+
+    return await berryContract.approve(spender, amount);
+}
+
 exports.deployBerry = deployBerry;
 exports.getBalance = getBalance;
 exports.transferBerry = transferBerry;
+exports.giveAllowance = giveAllowance;
