@@ -1,6 +1,6 @@
 const {keccak256, toUtf8Bytes} = require("ethers/lib/utils");
 
-const deploy = async () => {
+const deployAdministration = async () => {
     const Administration = await ethers.getContractFactory('Administration');
 
     return await Administration.deploy();
@@ -49,7 +49,7 @@ const getRoleAdminHashed = () => {
     return keccak256(toUtf8Bytes('ROLE_ADMIN'))
 }
 
-exports.deploy = deploy;
+exports.deployAdministration = deployAdministration;
 exports.addAdmin = addAdmin;
 exports.removeAdmin = removeAdmin;
 exports.isAdmin = isAdmin;

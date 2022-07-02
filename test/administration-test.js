@@ -1,10 +1,10 @@
 const { expect } = require('chai');
-const {deploy, isAdmin, getRoleAdminOfRoleAdmin, addAdmin, getRoleAdminHashed, removeAdmin, renounceRoleAdmin} = require("./helpers/AdministrationTestHelper");
+const {deployAdministration, isAdmin, getRoleAdminOfRoleAdmin, addAdmin, getRoleAdminHashed, removeAdmin, renounceRoleAdmin} = require("./helpers/AdministrationTestHelper");
 
 describe('Administration Contract', () => {
 
     it('Is founder account an admin', async () => {
-        const contract = await deploy();
+        const contract = await deployAdministration();
 
         const [founder] = await ethers.getSigners();
 
@@ -12,13 +12,13 @@ describe('Administration Contract', () => {
     })
 
     it('is "ROLE_ADMIN" the role that manages the role admin ', async () => {
-        const contract = await deploy();
+        const contract = await deployAdministration();
 
         expect(await getRoleAdminOfRoleAdmin(contract)).to.equal(getRoleAdminHashed());
     })
 
     it('Grant a new admin and check its role', async () => {
-        const contract = await deploy();
+        const contract = await deployAdministration();
 
         const [founder, newAdmin, notAdmin] = await ethers.getSigners();
 
@@ -32,7 +32,7 @@ describe('Administration Contract', () => {
     })
 
     it('Revoke grant', async () => {
-        const contract = await deploy();
+        const contract = await deployAdministration();
 
         const [founder, newAdmin] = await ethers.getSigners();
 
@@ -50,7 +50,7 @@ describe('Administration Contract', () => {
     })
 
     it('Admin renounce to role', async () => {
-        const contract = await deploy();
+        const contract = await deployAdministration();
 
         const [founder, newAdmin] = await ethers.getSigners();
 
@@ -69,7 +69,7 @@ describe('Administration Contract', () => {
     })
 
     it('Admin try to revoke his role by calling revokeRole directly', async () => {
-        const contract = await deploy();
+        const contract = await deployAdministration();
 
         const [founder, newAdmin] = await ethers.getSigners();
 
@@ -85,7 +85,7 @@ describe('Administration Contract', () => {
     })
 
     it("Non-admin account try to grant a non-admin account of role admin", async () => {
-        const contract = await deploy();
+        const contract = await deployAdministration();
 
         const [founder, notAdmin, secondNotAdmin] = await ethers.getSigners();
 
@@ -97,7 +97,7 @@ describe('Administration Contract', () => {
     })
 
     it("Admin user try to revoke role admin of founder", async () => {
-        const contract = await deploy();
+        const contract = await deployAdministration();
 
         const [founder, newAdmin] = await ethers.getSigners();
 
@@ -113,7 +113,7 @@ describe('Administration Contract', () => {
     })
 
     it('Non-admin account is actually not an admin', async () => {
-        const contract = await deploy();
+        const contract = await deployAdministration();
 
         const [founder, notAdmin] = await ethers.getSigners();
 
@@ -121,7 +121,7 @@ describe('Administration Contract', () => {
     })
 
     it('Founder try to renounce to his role admin', async () => {
-        const contract = await deploy();
+        const contract = await deployAdministration();
 
         await expect(renounceRoleAdmin(contract))
             .to
