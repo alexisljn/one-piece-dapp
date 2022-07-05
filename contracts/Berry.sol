@@ -140,11 +140,7 @@ contract Berry is IERC20 {
 //    function withDrawEth() external onlyAdmin;
 
 
-    function setAdministrationContract(address administrationContactAddress) public onlyAdmin {
-        require(administrationContractAddress.supportsInterface(type(AdministrationInterface).interfaceId),
-            'Administration contract does not support Administration interface'
-        );
-
+    function _setAdministrationContract(address administrationContractAddress) internal {
         _administrationContract = AdministrationInterface(administrationContractAddress);
     }
 
