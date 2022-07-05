@@ -5,6 +5,7 @@ import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/utils/introspection/ERC165Checker.sol";
 import "@openzeppelin/contracts/utils/introspection/ERC165.sol";
 import "@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol";
+import "abdk-libraries-solidity/ABDKMath64x64.sol";
 import "./interfaces/AdministrationInterface.sol";
 import "hardhat/console.sol";
 
@@ -127,8 +128,17 @@ contract Berry is IERC20 {
         emit AllowanceChanged("Reset", owner, spender, 0);
     }
 
-    //TODO Implement later
-    function getBerryPrice(uint amount) external;
+    function getBerryPrice(uint amount) external {
+        int dollarsPerEth = _getEthUsdPrice();
+        uint8 ethDecimals = _getEthDecimals();
+
+        int128 priceInDollar = ABDKMath64x64.divu(amount,_BERRY_PER_DOLLAR);
+        int128 priceInEth = ABDKMath64x64.divi(int256(priceInDollar), dollarsPerEth);
+
+        _pendingBerryRequest[msg.sender] = BerryRequest(amount * 10**decimals, priceInEth, block.timestamp);
+
+        emit BerryRequestCreated(msg.sender, amount, priceInDollar, priceInEth, dollarsPerEth, ethDecimals);
+    }
 
     //TODO Implement later
 //    function payForBerry() payable external;
