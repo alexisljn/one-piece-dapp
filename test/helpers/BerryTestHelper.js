@@ -61,6 +61,10 @@ const getBerryPrice = async (berryContract, amount) => {
     return await berryContract.getBerryPrice(amount);
 }
 
+const bigNumberToString = (bigNumber) => {
+    return bigNumber.toString();
+}
+
 exports.deployBerry = deployBerry;
 exports.getBalance = getBalance;
 exports.transferBerry = transferBerry;
