@@ -4,7 +4,7 @@ const {deployAdministration} = require("./AdministrationTestHelper");
 const deployBerry = async () => {
     const administrationContract = await deployAdministration();
 
-    const aggregatorV3Contract = "0x8A753747A1Fa494EC906cE90E9f37563A8AF630e"; // Won't work locally, but to make the constructor not crash
+    const aggregatorV3Contract = "0x5f4eC3Df9cbd43714FE2740f5E3616155c5b8419";
 
     const Berry = await ethers.getContractFactory('Berry');
 
