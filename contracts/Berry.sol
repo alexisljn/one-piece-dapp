@@ -28,7 +28,7 @@ contract Berry is IERC20 {
 
     struct BerryRequest {
         uint berryAmount;
-        uint ethAmount;
+        int128 ethAmount;
         uint startedAt;
     }
 
@@ -42,11 +42,14 @@ contract Berry is IERC20 {
     constructor(address administrationContractAddress, address aggregatorV3Address) {
         setAdministrationContract(administrationContractAddress);
         setAggregatorV3Contract(aggregatorV3Address);
+    event BerryRequestCreated(address indexed buyer, uint amount, int128 priceInDollar, int128 princeInEth, int dollarsPerEth, uint8 decimals);
 
         founder = msg.sender;
 
+        balances[founder] = 10000000 * 10**10; //10 millions pour le test
         console.log("Deployed by: ", msg.sender);
-        console.log("Deployed with supply: %s", initialSupplyInUnit);
+        console.log("Admin contrac:", administrationContractAddress);
+
     }
 
     function balanceOf(address account) override external view returns(uint) {
