@@ -8,10 +8,15 @@ dotenv.config();
 
 module.exports = {
   solidity: "0.8.0",
-
+  defaultNetwork: "hardhat",
   networks: { // Metamask fix
     hardhat: {
       chainId: 1337,
     },
+    rinkeby: {
+      url: 'https://rinkeby.infura.io/v3/50cd5eaf8dc540cc9fae0dd04281af33',
+      accounts: [process.env.RINKEBY_PRIMARY_ACCOUNT],
+      timeout: 60000
+    }
   }
 };
