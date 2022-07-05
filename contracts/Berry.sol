@@ -4,6 +4,8 @@ pragma solidity ^0.8.0;
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/utils/introspection/ERC165Checker.sol";
 import "@openzeppelin/contracts/utils/introspection/ERC165.sol";
+import "@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol";
+import "abdk-libraries-solidity/ABDKMath64x64.sol";
 import "./interfaces/AdministrationInterface.sol";
 import "hardhat/console.sol";
 
@@ -14,9 +16,10 @@ contract Berry is IERC20 {
     string public name = "Berry";
     string public symbol = "BER";
     uint8 public decimals = 10;
-    uint32 constant private INITIAL_SUPPLY = 100000000; // Useful ?
+    uint32 constant private _BERRY_PER_DOLLAR = 1000000;
     uint256 public override totalSupply;
-    AdministrationInterface private administrationContract;
+    AdministrationInterface private _administrationContract;
+    AggregatorV3Interface private _aggregatorV3Contract;
 
     address public founder;
 
@@ -26,27 +29,28 @@ contract Berry is IERC20 {
 
     struct BerryRequest {
         uint berryAmount;
-        uint ethAmount;
+        int128 ethAmount;
         uint startedAt;
     }
 
     modifier onlyAdmin() {
-        require(administrationContract.isAdmin(msg.sender), "Only admins are allowed");
+        require(_administrationContract.isAdmin(msg.sender), "Only admins are allowed");
         _;
     }
 
     event AllowanceChanged(string indexed action, address indexed owner, address indexed spender, uint amount);
 
-    constructor(address administrationContractAddress) {
-        setAdministrationContract(administrationContractAddress);
+    event BerryRequestCreated(address indexed buyer, uint amount, int128 priceInDollar, int128 princeInEth, int dollarsPerEth, uint8 decimals);
 
+    constructor(address administrationContractAddress, address aggregatorV3Address) {
+        _setAdministrationContract(administrationContractAddress);
+        _setAggregatorV3Contract(aggregatorV3Address);
         founder = msg.sender;
 
-        uint initialSupplyInUnit = INITIAL_SUPPLY  * (10 ** decimals);
-        _mint(founder, initialSupplyInUnit); // 100 million at start
-
+        balances[founder] = 10000000 * 10**10; //10 millions pour le test
         console.log("Deployed by: ", msg.sender);
-        console.log("Deployed with supply: %s", initialSupplyInUnit);
+        console.log("Admin contrac:", administrationContractAddress);
+
     }
 
     function balanceOf(address account) override external view returns(uint) {
@@ -124,37 +128,61 @@ contract Berry is IERC20 {
         emit AllowanceChanged("Reset", owner, spender, 0);
     }
 
-    //TODO Implement later
-    function getBerryPrice(uint amount) external;
+    function getBerryPrice(uint amount) external {
+        int dollarsPerEth = _getEthUsdPrice();
+        uint8 ethDecimals = _getEthDecimals();
+
+        int128 priceInDollar = ABDKMath64x64.divu(amount,_BERRY_PER_DOLLAR);
+        int128 priceInEth = ABDKMath64x64.divi(int256(priceInDollar), dollarsPerEth);
+
+        _pendingBerryRequest[msg.sender] = BerryRequest(amount * 10**decimals, priceInEth, block.timestamp);
+
+        emit BerryRequestCreated(msg.sender, amount, priceInDollar, priceInEth, dollarsPerEth, ethDecimals);
+    }
 
     //TODO Implement later
-    function payForBerry() payable external;
+//    function payForBerry() payable external;
 
     //TODO Implement later
-    receive() payable external;
+//    receive() payable external;
 
     //TODO Implement later
-    function withDrawEth() external onlyAdmin;
+//    function withDrawEth() external onlyAdmin;
 
-    function setAdministrationContract(address administrationContactAddress) public onlyAdmin {
+    function setAdministrationContract(address administrationContractAddress) public onlyAdmin {
+        _setAdministrationContract(administrationContractAddress);
+    }
+
+    function _setAdministrationContract(address administrationContractAddress) internal {
         require(administrationContractAddress.supportsInterface(type(AdministrationInterface).interfaceId),
             'Administration contract does not support Administration interface'
         );
 
-        administrationContract = AdministrationInterface(administrationContractAddress);
+        _administrationContract = AdministrationInterface(administrationContractAddress);
+    }
+
+    function setAggregatorV3Contract(address aggregatorV3Address) public onlyAdmin {
+        _setAggregatorV3Contract(aggregatorV3Address);
+    }
+
+    function _setAggregatorV3Contract(address aggregatorV3Address) internal {
+        _aggregatorV3Contract = AggregatorV3Interface(aggregatorV3Address);
+    }
+
+    function _getEthUsdPrice() private view returns(int) {
+        (,int price,,,) = _aggregatorV3Contract.latestRoundData();
+        return price;
+    }
+
+    function _getEthDecimals() private view returns(uint8) {
+        return _aggregatorV3Contract.decimals();
     }
 
     //TODO Implement later
-    function _getEthUsdPrice() private view returns(uint);
+//    function _createBerryRequest() private;
 
     //TODO Implement later
-    function _getEthDecimals() private view returns(uint);
-
-    //TODO Implement later
-    function _createBerryRequest() private;
-
-    //TODO Implement later
-    function _checkBerryRequest() private;
+//    function _checkBerryRequest() private;
 
     function _mint(address account, uint amount) internal {
         totalSupply += amount;
