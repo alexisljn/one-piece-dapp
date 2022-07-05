@@ -139,12 +139,17 @@ contract Berry is IERC20 {
     //TODO Implement later
 //    function withDrawEth() external onlyAdmin;
 
+    function setAdministrationContract(address administrationContractAddress) public onlyAdmin {
+        _setAdministrationContract(administrationContractAddress);
+    }
 
     function _setAdministrationContract(address administrationContractAddress) internal {
         _administrationContract = AdministrationInterface(administrationContractAddress);
     }
 
-    function setAggregatorV3Contract(address aggregatorV3Address) {
+    function setAggregatorV3Contract(address aggregatorV3Address) public onlyAdmin {
+        _setAggregatorV3Contract(aggregatorV3Address);
+    }
 
     function _setAggregatorV3Contract(address aggregatorV3Address) internal {
         require(aggregatorV3Address.supportsInterface(type(AggregatorV3Interface).interfaceId),
