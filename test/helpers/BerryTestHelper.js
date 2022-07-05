@@ -23,14 +23,14 @@ const getBalance = async (berryContract, account) => {
     return await berryContract.balanceOf(account);
 }
 
-const transferBerry = async (berryContract, amount, receiver, thirdPartyAccount = null) => {
+const transferBerry = async (berryContract, receiver, amount, thirdPartyAccount = null) => {
     if (thirdPartyAccount) {
         const berryContractToThirdParty = berryContract.connect(thirdPartyAccount);
 
-        return await berryContractToThirdParty.transfer(amount, receiver);
+        return await berryContractToThirdParty.transfer(receiver, amount);
     }
 
-    return await berryContract.transfer(amount, receiver);
+    return await berryContract.transfer(receiver, amount);
 }
 
 const giveAllowance = async (berryContract, amount, spender, thirdPartyAccount = null) => {
