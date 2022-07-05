@@ -160,7 +160,7 @@ contract Berry is IERC20 {
     }
 
     function _getEthUsdPrice() private view returns(int) {
-        (,price,,,) = _aggregatorV3Contract.latestRoundData();
+        (,int price,,,) = _aggregatorV3Contract.latestRoundData();
         return price;
     }
 
