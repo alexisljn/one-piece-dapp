@@ -8,6 +8,9 @@ dotenv.config();
 
 module.exports = {
   solidity: "0.8.0",
+  paths: {
+    artifacts: './frontend/src/artifacts' // ABI available for frontend
+  },
   defaultNetwork: "hardhat",
   networks: { // Metamask fix
     hardhat: {
