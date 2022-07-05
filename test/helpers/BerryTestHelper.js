@@ -11,6 +11,14 @@ const deployBerry = async () => {
     return await Berry.deploy(administrationContract.address, aggregatorV3Contract);
 }
 
+const deployBerryOnRinkeby = async () => {
+    const aggregatorV3Contract = "0x8A753747A1Fa494EC906cE90E9f37563A8AF630e";
+
+    const Berry = await ethers.getContractFactory('Berry');
+
+    return await Berry.deploy("0x0fAa888b5124337Ae2aE3Cd3c0C770608ff90401", aggregatorV3Contract);
+}
+
 const getBalance = async (berryContract, account) => {
     return await berryContract.balanceOf(account);
 }
