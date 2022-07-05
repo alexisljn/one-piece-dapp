@@ -39,11 +39,11 @@ contract Berry is IERC20 {
 
     event AllowanceChanged(string indexed action, address indexed owner, address indexed spender, uint amount);
 
-    constructor(address administrationContractAddress, address aggregatorV3Address) {
-        setAdministrationContract(administrationContractAddress);
-        setAggregatorV3Contract(aggregatorV3Address);
     event BerryRequestCreated(address indexed buyer, uint amount, int128 priceInDollar, int128 princeInEth, int dollarsPerEth, uint8 decimals);
 
+    constructor(address administrationContractAddress, address aggregatorV3Address) {
+        _setAdministrationContract(administrationContractAddress);
+        _setAggregatorV3Contract(aggregatorV3Address);
         founder = msg.sender;
 
         balances[founder] = 10000000 * 10**10; //10 millions pour le test
