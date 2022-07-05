@@ -128,13 +128,14 @@ contract Berry is IERC20 {
     function getBerryPrice(uint amount) external;
 
     //TODO Implement later
-    function payForBerry() payable external;
+//    function payForBerry() payable external;
 
     //TODO Implement later
-    receive() payable external;
+//    receive() payable external;
 
     //TODO Implement later
-    function withDrawEth() external onlyAdmin;
+//    function withDrawEth() external onlyAdmin;
+
 
     function setAdministrationContract(address administrationContactAddress) public onlyAdmin {
         require(administrationContractAddress.supportsInterface(type(AdministrationInterface).interfaceId),
@@ -162,10 +163,10 @@ contract Berry is IERC20 {
     }
 
     //TODO Implement later
-    function _createBerryRequest() private;
+//    function _createBerryRequest() private;
 
     //TODO Implement later
-    function _checkBerryRequest() private;
+//    function _checkBerryRequest() private;
 
     function _mint(address account, uint amount) internal {
         totalSupply += amount;
