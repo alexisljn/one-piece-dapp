@@ -154,6 +154,10 @@ contract Berry is IERC20 {
     }
 
     function _setAdministrationContract(address administrationContractAddress) internal {
+        require(administrationContractAddress.supportsInterface(type(AdministrationInterface).interfaceId),
+            'Administration contract does not support Administration interface'
+        );
+
         _administrationContract = AdministrationInterface(administrationContractAddress);
     }
 
@@ -162,10 +166,6 @@ contract Berry is IERC20 {
     }
 
     function _setAggregatorV3Contract(address aggregatorV3Address) internal {
-        require(aggregatorV3Address.supportsInterface(type(AggregatorV3Interface).interfaceId),
-            "Aggregator V3 contract does not support Aggregator V3 interface"
-        );
-
         _aggregatorV3Contract = AggregatorV3Interface(aggregatorV3Address);
     }
 
