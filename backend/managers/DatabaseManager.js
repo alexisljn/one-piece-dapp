@@ -15,6 +15,7 @@ async function initializeFirebaseApp() {
     firebaseInstance = initializeApp(firebaseConfig);
     await logAsDatabaseAdmin();
     await initializeDatabase()
+    console.log(databaseAdminCredentials)
 }
 
 function setConfigValuesFromEnvVars() {
@@ -40,9 +41,9 @@ async function logAsDatabaseAdmin() {
 
 async function initializeDatabase() {
     firebaseDatabase = getDatabase(firebaseInstance);
-    const dbRef = ref(firebaseDatabase);
-    const snapshot = await get(child(dbRef, 'skills'))
-    console.log(snapshot.val())
+    // const dbRef = ref(firebaseDatabase);
+    // const snapshot = await get(child(dbRef, 'skills'))
+    // console.log(snapshot.val())
 
 }
 
