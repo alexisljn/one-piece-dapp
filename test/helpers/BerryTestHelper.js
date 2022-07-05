@@ -57,6 +57,10 @@ const transferBerryFrom = async (berryContract, owner, receiver, amount, thirdPa
     return await berryContract.transferFrom(owner, receiver, amount);
 }
 
+const getBerryPrice = async (berryContract, amount) => {
+    return await berryContract.getBerryPrice(amount);
+}
+
 exports.deployBerry = deployBerry;
 exports.getBalance = getBalance;
 exports.transferBerry = transferBerry;
