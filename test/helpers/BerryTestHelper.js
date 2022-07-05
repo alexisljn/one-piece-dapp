@@ -66,8 +66,11 @@ const bigNumberToString = (bigNumber) => {
 }
 
 exports.deployBerry = deployBerry;
+exports.deployBerryOnRinkeby = deployBerryOnRinkeby;
 exports.getBalance = getBalance;
 exports.transferBerry = transferBerry;
 exports.giveAllowance = giveAllowance;
 exports.getAllowance = getAllowance;
 exports.transferBerryFrom = transferBerryFrom;
+exports.getBerryPrice = getBerryPrice;
+exports.bigNumberToString = bigNumberToString;
