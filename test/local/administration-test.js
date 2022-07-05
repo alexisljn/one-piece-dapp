@@ -1,5 +1,5 @@
 const { expect } = require('chai');
-const {deployAdministration, isAdmin, getRoleAdminOfRoleAdmin, addAdmin, getRoleAdminHashed, removeAdmin, renounceRoleAdmin} = require("./helpers/AdministrationTestHelper");
+const {deployAdministration, isAdmin, getRoleAdminOfRoleAdmin, addAdmin, getRoleAdminHashed, removeAdmin, renounceRoleAdmin} = require("../helpers/AdministrationTestHelper");
 
 describe('Administration Contract', () => {
 
