@@ -15,6 +15,10 @@ module.exports = {
   networks: { // Metamask fix
     hardhat: {
       chainId: 1337,
+      forking: {
+        url: `https://eth-mainnet.g.alchemy.com/v2/${process.env.ALCHEMY_KEY}`,
+        blockNumber: 14999999
+      }
     },
     rinkeby: {
       url: 'https://rinkeby.infura.io/v3/50cd5eaf8dc540cc9fae0dd04281af33',
